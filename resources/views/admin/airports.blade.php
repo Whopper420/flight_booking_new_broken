@@ -52,32 +52,32 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="#" method="POST">
+                                                <form action="{{ route('admin.airports.update', $airport->id) }}" method="POST">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="mb-3">
                                                         <label for="edit_code_{{ $airport->id }}" class="form-label">Code</label>
-                                                        <input type="text" class="form-control" id="edit_code_{{ $airport->id }}" value="{{ $airport->code }}" readonly>
+                                                        <input type="text" class="form-control" id="edit_code_{{ $airport->id }}" name="code" value="{{ $airport->code }}" readonly>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="edit_name_{{ $airport->id }}" class="form-label">Name</label>
-                                                        <input type="text" class="form-control" id="edit_name_{{ $airport->id }}" value="{{ $airport->name }}">
+                                                        <input type="text" class="form-control" id="edit_name_{{ $airport->id }}" name="name" value="{{ $airport->name }}" required>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="edit_city_{{ $airport->id }}" class="form-label">City</label>
-                                                        <input type="text" class="form-control" id="edit_city_{{ $airport->id }}" value="{{ $airport->city }}">
+                                                        <input type="text" class="form-control" id="edit_city_{{ $airport->id }}" name="city" value="{{ $airport->city }}" required>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="edit_country_{{ $airport->id }}" class="form-label">Country</label>
-                                                        <input type="text" class="form-control" id="edit_country_{{ $airport->id }}" value="{{ $airport->country }}">
+                                                        <input type="text" class="form-control" id="edit_country_{{ $airport->id }}" name="country" value="{{ $airport->country }}" required>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="edit_latitude_{{ $airport->id }}" class="form-label">Latitude</label>
-                                                        <input type="text" class="form-control" id="edit_latitude_{{ $airport->id }}" value="{{ $airport->latitude }}">
+                                                        <input type="text" class="form-control" id="edit_latitude_{{ $airport->id }}" name="latitude" value="{{ $airport->latitude }}">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="edit_longitude_{{ $airport->id }}" class="form-label">Longitude</label>
-                                                        <input type="text" class="form-control" id="edit_longitude_{{ $airport->id }}" value="{{ $airport->longitude }}">
+                                                        <input type="text" class="form-control" id="edit_longitude_{{ $airport->id }}" name="longitude" value="{{ $airport->longitude }}">
                                                     </div>
                                                     <button type="submit" class="btn btn-primary">Update Airport</button>
                                                 </form>
@@ -99,7 +99,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <form action="#" method="POST" class="d-inline">
+                                                <form action="{{ route('admin.airports.destroy', $airport->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger">Delete</button>
@@ -130,7 +130,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form action="{{ route('admin.airports.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="code" class="form-label">Code</label>

@@ -65,57 +65,65 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="#" method="POST">
+                                                <form action="{{ route('admin.flights.update', $flight->id) }}" method="POST">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="row">
                                                         <div class="col-md-6 mb-3">
                                                             <label for="edit_flight_number_{{ $flight->id }}" class="form-label">Flight Number</label>
-                                                            <input type="text" class="form-control" id="edit_flight_number_{{ $flight->id }}" value="{{ $flight->flight_number }}">
+                                                            <input type="text" class="form-control" id="edit_flight_number_{{ $flight->id }}" name="flight_number" value="{{ $flight->flight_number }}" required>
                                                         </div>
                                                         <div class="col-md-6 mb-3">
                                                             <label for="edit_airline_{{ $flight->id }}" class="form-label">Airline</label>
-                                                            <input type="text" class="form-control" id="edit_airline_{{ $flight->id }}" value="{{ $flight->airline }}">
+                                                            <input type="text" class="form-control" id="edit_airline_{{ $flight->id }}" name="airline" value="{{ $flight->airline }}" required>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 mb-3">
                                                             <label for="edit_departure_airport_{{ $flight->id }}" class="form-label">Departure Airport</label>
-                                                            <select class="form-select" id="edit_departure_airport_{{ $flight->id }}">
+                                                            <select class="form-select" id="edit_departure_airport_{{ $flight->id }}" name="departure_airport" required>
                                                                 <option value="">Select Airport</option>
-                                                                <!-- Options would be populated dynamically -->
+                                                                @foreach($airports as $airport)
+                                                                    <option value="{{ $airport->id }}" {{ $flight->departure_airport_id == $airport->id ? 'selected' : '' }}>
+                                                                        {{ $airport->name }} ({{ $airport->code }}) - {{ $airport->city }}, {{ $airport->country }}
+                                                                    </option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="col-md-6 mb-3">
                                                             <label for="edit_arrival_airport_{{ $flight->id }}" class="form-label">Arrival Airport</label>
-                                                            <select class="form-select" id="edit_arrival_airport_{{ $flight->id }}">
+                                                            <select class="form-select" id="edit_arrival_airport_{{ $flight->id }}" name="arrival_airport" required>
                                                                 <option value="">Select Airport</option>
-                                                                <!-- Options would be populated dynamically -->
+                                                                @foreach($airports as $airport)
+                                                                    <option value="{{ $airport->id }}" {{ $flight->arrival_airport_id == $airport->id ? 'selected' : '' }}>
+                                                                        {{ $airport->name }} ({{ $airport->code }}) - {{ $airport->city }}, {{ $airport->country }}
+                                                                    </option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 mb-3">
                                                             <label for="edit_departure_time_{{ $flight->id }}" class="form-label">Departure Time</label>
-                                                            <input type="datetime-local" class="form-control" id="edit_departure_time_{{ $flight->id }}" value="{{ \Carbon\Carbon::parse($flight->departure_time)->format('Y-m-d\TH:i') }}">
+                                                            <input type="datetime-local" class="form-control" id="edit_departure_time_{{ $flight->id }}" name="departure_time" value="{{ \Carbon\Carbon::parse($flight->departure_time)->format('Y-m-d\TH:i') }}" required>
                                                         </div>
                                                         <div class="col-md-6 mb-3">
                                                             <label for="edit_arrival_time_{{ $flight->id }}" class="form-label">Arrival Time</label>
-                                                            <input type="datetime-local" class="form-control" id="edit_arrival_time_{{ $flight->id }}" value="{{ \Carbon\Carbon::parse($flight->arrival_time)->format('Y-m-d\TH:i') }}">
+                                                            <input type="datetime-local" class="form-control" id="edit_arrival_time_{{ $flight->id }}" name="arrival_time" value="{{ \Carbon\Carbon::parse($flight->arrival_time)->format('Y-m-d\TH:i') }}" required>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-4 mb-3">
                                                             <label for="edit_duration_{{ $flight->id }}" class="form-label">Duration (minutes)</label>
-                                                            <input type="number" class="form-control" id="edit_duration_{{ $flight->id }}" value="{{ $flight->duration_minutes }}">
+                                                            <input type="number" class="form-control" id="edit_duration_{{ $flight->id }}" name="duration" value="{{ $flight->duration_minutes }}" required>
                                                         </div>
                                                         <div class="col-md-4 mb-3">
                                                             <label for="edit_price_{{ $flight->id }}" class="form-label">Price</label>
-                                                            <input type="number" class="form-control" id="edit_price_{{ $flight->id }}" value="{{ $flight->price }}" step="0.01">
+                                                            <input type="number" class="form-control" id="edit_price_{{ $flight->id }}" name="price" value="{{ $flight->price }}" step="0.01" required>
                                                         </div>
                                                         <div class="col-md-4 mb-3">
                                                             <label for="edit_status_{{ $flight->id }}" class="form-label">Status</label>
-                                                            <select class="form-select" id="edit_status_{{ $flight->id }}">
+                                                            <select class="form-select" id="edit_status_{{ $flight->id }}" name="status" required>
                                                                 <option value="scheduled" {{ $flight->status === 'scheduled' ? 'selected' : '' }}>Scheduled</option>
                                                                 <option value="delayed" {{ $flight->status === 'delayed' ? 'selected' : '' }}>Delayed</option>
                                                                 <option value="cancelled" {{ $flight->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
@@ -127,11 +135,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6 mb-3">
                                                             <label for="edit_total_seats_{{ $flight->id }}" class="form-label">Total Seats</label>
-                                                            <input type="number" class="form-control" id="edit_total_seats_{{ $flight->id }}" value="{{ $flight->total_seats }}">
+                                                            <input type="number" class="form-control" id="edit_total_seats_{{ $flight->id }}" name="total_seats" value="{{ $flight->total_seats }}" required>
                                                         </div>
                                                         <div class="col-md-6 mb-3">
                                                             <label for="edit_available_seats_{{ $flight->id }}" class="form-label">Available Seats</label>
-                                                            <input type="number" class="form-control" id="edit_available_seats_{{ $flight->id }}" value="{{ $flight->available_seats }}">
+                                                            <input type="number" class="form-control" id="edit_available_seats_{{ $flight->id }}" name="available_seats" value="{{ $flight->available_seats }}" required>
                                                         </div>
                                                     </div>
                                                     <button type="submit" class="btn btn-primary">Update Flight</button>
@@ -154,7 +162,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                <form action="#" method="POST" class="d-inline">
+                                                <form action="{{ route('admin.flights.destroy', $flight->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger">Delete</button>
@@ -185,7 +193,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form action="{{ route('admin.flights.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -202,14 +210,22 @@
                             <label for="departure_airport" class="form-label">Departure Airport</label>
                             <select class="form-select" id="departure_airport" name="departure_airport" required>
                                 <option value="">Select Airport</option>
-                                <!-- Options would be populated dynamically -->
+                                @foreach($airports as $airport)
+                                    <option value="{{ $airport->id }}">
+                                        {{ $airport->name }} ({{ $airport->code }}) - {{ $airport->city }}, {{ $airport->country }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="arrival_airport" class="form-label">Arrival Airport</label>
                             <select class="form-select" id="arrival_airport" name="arrival_airport" required>
                                 <option value="">Select Airport</option>
-                                <!-- Options would be populated dynamically -->
+                                @foreach($airports as $airport)
+                                    <option value="{{ $airport->id }}">
+                                        {{ $airport->name }} ({{ $airport->code }}) - {{ $airport->city }}, {{ $airport->country }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>

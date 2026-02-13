@@ -175,6 +175,154 @@ class FlightBookingController extends Controller
     public function showFlights()
     {
         $flights = Flight::with(['departureAirport', 'arrivalAirport'])->get();
-        return view('admin.flights', compact('flights'));
+        $airports = Airport::all();
+        return view('admin.flights', compact('flights', 'airports'));
     }
+
+    // Store a new flight
+    public function storeFlight(Request $request)
+    {
+        $request->validate([
+            'flight_number' => 'required|unique:flights,flight_number',
+            'airline' => 'required',
+            'departure_airport' => 'required|exists:airports,id',
+            'arrival_airport' => 'required|exists:airports,id|different:departure_airport',
+            'departure_time' => 'required|date',
+            'arrival_time' => 'required|date|after:departure_time',
+            'duration' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'status' => 'required|in:scheduled,delayed,cancelled,departed,arrived',
+            'total_seats' => 'required|integer|min:1',
+            'available_seats' => 'required|integer|min:0|lte:total_seats',
+        ]);
+
+        // Filter out plane_id from request if present
+        $flightData = $request->only([
+            'flight_number', 'airline', 'departure_airport', 'arrival_airport', 
+            'departure_time', 'arrival_time', 'duration', 'price', 'status', 
+            'total_seats', 'available_seats'
+        ]);
+        
+        Flight::create([
+            'flight_number' => $flightData['flight_number'],
+            'airline' => $flightData['airline'],
+            'departure_airport_id' => $flightData['departure_airport'],
+            'arrival_airport_id' => $flightData['arrival_airport'],
+            'departure_time' => $flightData['departure_time'],
+            'arrival_time' => $flightData['arrival_time'],
+            'duration_minutes' => $flightData['duration'],
+            'price' => $flightData['price'],
+            'status' => $flightData['status'],
+            'total_seats' => $flightData['total_seats'],
+            'available_seats' => $flightData['available_seats'],
+        ]);
+
+        return redirect()->route('admin.flights')->with('success', 'Flight added successfully!');
+    }
+
+    // Update an existing flight
+    public function updateFlight(Request $request, $id)
+    {
+        $request->validate([
+            'flight_number' => 'required|unique:flights,flight_number,' . $id,
+            'airline' => 'required',
+            'departure_airport' => 'required|exists:airports,id',
+            'arrival_airport' => 'required|exists:airports,id|different:departure_airport',
+            'departure_time' => 'required|date',
+            'arrival_time' => 'required|date|after:departure_time',
+            'duration' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'status' => 'required|in:scheduled,delayed,cancelled,departed,arrived',
+            'total_seats' => 'required|integer|min:1',
+            'available_seats' => 'required|integer|min:0|lte:total_seats',
+        ]);
+
+        $flight = Flight::findOrFail($id);
+        
+        // Filter out plane_id from request if present
+        $flightData = $request->only([
+            'flight_number', 'airline', 'departure_airport', 'arrival_airport', 
+            'departure_time', 'arrival_time', 'duration', 'price', 'status', 
+            'total_seats', 'available_seats'
+        ]);
+        
+        $flight->update([
+            'flight_number' => $flightData['flight_number'],
+            'airline' => $flightData['airline'],
+            'departure_airport_id' => $flightData['departure_airport'],
+            'arrival_airport_id' => $flightData['arrival_airport'],
+            'departure_time' => $flightData['departure_time'],
+            'arrival_time' => $flightData['arrival_time'],
+            'duration_minutes' => $flightData['duration'],
+            'price' => $flightData['price'],
+            'status' => $flightData['status'],
+            'total_seats' => $flightData['total_seats'],
+            'available_seats' => $flightData['available_seats'],
+        ]);
+
+        return redirect()->route('admin.flights')->with('success', 'Flight updated successfully!');
+    }
+
+    // Delete a flight
+    public function destroyFlight($id)
+    {
+        $flight = Flight::findOrFail($id);
+        $flight->delete();
+
+        return redirect()->route('admin.flights')->with('success', 'Flight deleted successfully!');
+    }
+
+    // Store a new airport
+    public function storeAirport(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|unique:airports,code',
+            'name' => 'required',
+            'city' => 'required',
+            'country' => 'required',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+        ]);
+
+        Airport::create($request->all());
+
+        return redirect()->route('admin.airports')->with('success', 'Airport added successfully!');
+    }
+
+    // Update an existing airport
+    public function updateAirport(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'city' => 'required',
+            'country' => 'required',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+        ]);
+
+        $airport = Airport::findOrFail($id);
+        $airport->update($request->all());
+
+        return redirect()->route('admin.airports')->with('success', 'Airport updated successfully!');
+    }
+
+    // Delete an airport
+    public function destroyAirport($id)
+    {
+        $airport = Airport::findOrFail($id);
+        
+        // Check if the airport is associated with any flights
+        $hasFlights = Flight::where('departure_airport_id', $id)
+                           ->orWhere('arrival_airport_id', $id)
+                           ->exists();
+        
+        if ($hasFlights) {
+            return redirect()->route('admin.airports')->with('error', 'Cannot delete airport as it is associated with flights.');
+        }
+
+        $airport->delete();
+
+        return redirect()->route('admin.airports')->with('success', 'Airport deleted successfully!');
+    }
+
 }

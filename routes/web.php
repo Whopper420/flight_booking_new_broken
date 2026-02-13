@@ -25,4 +25,10 @@ Route::get('/my-bookings', [FlightBookingController::class, 'showMyBookings'])->
 
 // Admin routes
 Route::get('/admin/airports', [FlightBookingController::class, 'showAirports'])->name('admin.airports');
+Route::post('/admin/airports', [FlightBookingController::class, 'storeAirport'])->name('admin.airports.store');
+Route::put('/admin/airports/{id}', [FlightBookingController::class, 'updateAirport'])->name('admin.airports.update');
+Route::delete('/admin/airports/{id}', [FlightBookingController::class, 'destroyAirport'])->name('admin.airports.destroy');
 Route::get('/admin/flights', [FlightBookingController::class, 'showFlights'])->name('admin.flights');
+Route::post('/admin/flights', [FlightBookingController::class, 'storeFlight'])->name('admin.flights.store');
+Route::put('/admin/flights/{id}', [FlightBookingController::class, 'updateFlight'])->name('admin.flights.update');
+Route::delete('/admin/flights/{id}', [FlightBookingController::class, 'destroyFlight'])->name('admin.flights.destroy');
