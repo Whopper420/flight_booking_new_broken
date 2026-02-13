@@ -22,7 +22,7 @@ The GitHub Actions workflow is configured to:
 - Run on every push to `main` or `master` branch
 - Run on every pull request to `main` or `master` branch
 - Execute unit tests only (no code linting)
-- Use PHP 8.2 runtime environment
+- Use PHP 8.4.4 runtime environment
 - Create an SQLite database for testing
 
 ### Unit Tests
