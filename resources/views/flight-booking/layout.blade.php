@@ -13,27 +13,91 @@
         .navbar-brand {
             font-weight: bold;
         }
+        body {
+            background-color: #ff00ff !important; /* Magenta background */
+            color: #ffff00 !important; /* Yellow text */
+        }
         .card {
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            border: 1px solid rgba(0, 0, 0, 0.125);
+            background-color: #00ffff !important; /* Cyan card background */
+            color: #ff00ff !important; /* Magenta text on cards */
+            box-shadow: 0 0.125rem 0.25rem #ff00ff !important; /* Magenta shadow */
+            border: 3px solid #ffff00 !important; /* Yellow border */
         }
         .bg-primary-custom {
-            background: linear-gradient(135deg, #0066cc, #003d99);
+            background: linear-gradient(135deg, #ff0000, #00ff00) !important; /* Red to green - worst combo */
         }
         .flight-card {
-            border-left: 4px solid #007bff;
+            border-left: 8px solid #ff1493 !important; /* Deep pink border */
         }
         .airport-card {
-            border-left: 4px solid #28a745;
+            border-left: 8px solid #00ff00 !important; /* Bright green border */
         }
         .booking-card {
-            border-left: 4px solid #ffc107;
+            border-left: 8px solid #ff00ff !important; /* Magenta border */
         }
         .passenger-card {
-            border-left: 4px solid #17a2b8;
+            border-left: 8px solid #ffff00 !important; /* Yellow border */
         }
         .ticket-card {
-            border-left: 4px solid #6f42c1;
+            border-left: 8px solid #00ffff !important; /* Cyan border */
+        }
+        .table {
+            background-color: #ff69b4 !important; /* Hot pink table background */
+            color: #ffffff !important; /* White text on table */
+        }
+        .table th {
+            background-color: #800080 !important; /* Purple header */
+            color: #00ff00 !important; /* Green text in header */
+        }
+        .table td {
+            background-color: #ffff00 !important; /* Yellow cell background */
+            color: #ff0000 !important; /* Red text in cells */
+        }
+        .btn-primary {
+            background-color: #ff4500 !important; /* Orange red button */
+            border-color: #ff4500 !important; /* Orange red border */
+            color: #ffffff !important; /* White text */
+        }
+        .btn-primary:hover {
+            background-color: #ffd700 !important; /* Gold hover */
+            border-color: #ffd700 !important; /* Gold border */
+            color: #0000ff !important; /* Blue text on hover */
+        }
+        .form-control {
+            background-color: #00ff00 !important; /* Bright green input background */
+            color: #0000ff !important; /* Blue text in inputs */
+            border: 2px solid #ff00ff !important; /* Magenta border */
+        }
+        .form-select {
+            background-color: #ff1493 !important; /* Deep pink select background */
+            color: #ffff00 !important; /* Yellow text in selects */
+            border: 2px solid #00ffff !important; /* Cyan border */
+        }
+        .navbar {
+            background-color: #0000ff !important; /* Blue navbar */
+        }
+        .modal-content {
+            background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ffff00) !important; /* Rainbow modal */
+            color: #ffffff !important; /* White text in modal */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #ff00ff !important; /* Magenta headings */
+            text-shadow: 2px 2px 4px #00ffff !important; /* Cyan text shadow */
+        }
+        a {
+            color: #00ffff !important; /* Cyan links */
+        }
+        a:hover {
+            color: #ff69b4 !important; /* Hot pink on hover */
+        }
+        .alert {
+            background-color: #ffff00 !important; /* Yellow alerts */
+            color: #ff0000 !important; /* Red text in alerts */
+            border: 3px solid #ff00ff !important; /* Magenta border */
+        }
+        .badge {
+            background-color: #ff4500 !important; /* Orange red badges */
+            color: #ffff00 !important; /* Yellow text in badges */
         }
     </style>
 </head>
